@@ -33,6 +33,11 @@ app.get("/register",(req,res)=>{
     res.render("register");
 })
 
+app.get("/login",(req,res)=>{
+    res.render("login");
+})
+
+
 app.post("/register",async(req,res)=>{
       try{
            const obt_password = req.body.password;
@@ -56,6 +61,24 @@ app.post("/register",async(req,res)=>{
       }
       catch(err){
           res.status(400).send(err);
+      }
+})
+
+app.post("/login",async(req,res)=>{
+      try{
+        const email = req.body.email;
+        const password = req.body.password;
+
+        const result = await Register.findOne({email:email});
+         if(password === result.password){
+            res.status(201).render("index");
+         }
+         else{
+            res.status(400).send("Invalid User Credentials");
+         }
+      }
+      catch(err){
+         res.status(400).send("Invalid User Credentials");
       }
 })
 
